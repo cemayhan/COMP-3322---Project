@@ -1,0 +1,53 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="login.aspx.cs" Inherits="login" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    
+<head runat="server">
+    
+    <title></title><center>
+    <style>
+      body {
+    background-image:url("http://localhost/turkish/images/background.jpg");
+    background-repeat: repeat;
+    background-size: 100% 100%;
+}
+html {
+    height: 100%
+}
+
+    </style></center>
+</head>
+<body style="text-align: center">
+    
+</div>
+    <form id="form1" runat="server">
+    <div>
+    
+        
+    
+        <h1>
+            <asp:Label ID="Label1" runat="server" style="font-size: larger; color: #000099" Text="SYSTEM LOGIN"></asp:Label>
+        </h1>
+        <p>
+            &nbsp;</p>
+        <p>
+            <asp:Label ID="Label2" runat="server" style="font-size: x-large; color: #000066; background-color: #CCFFFF" Text="Username "></asp:Label>
+            <asp:TextBox ID="TextBox1" runat="server" Height="26px" Width="176px"></asp:TextBox>
+        </p>
+        <p>
+            <asp:Label ID="Label3" runat="server" style="font-size: x-large; color: #000066; background-color: #CCFFFF" Text="Password "></asp:Label>
+&nbsp;<asp:TextBox ID="TextBox2" runat="server" Height="28px" Width="171px" TextMode="Password"></asp:TextBox>
+        </p>
+        <p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button ID="Button1" runat="server" Height="38px" OnClick="Button1_Click" style="font-size: large; color: #000066; background-color: #CCFFFF" Text="Login" Width="86px" />
+        </p>
+    
+        
+    
+    </div>
+    </form>
+</body>
+</html>
