@@ -5,8 +5,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Configuration;
+using System.Text.RegularExpressions;
+using System.Web.UI.HtmlControls;
+using System.Web.Security;
+
 public partial class _Default : System.Web.UI.Page
 {
+
     protected void Page_Load(object sender, EventArgs e)
     {
         HttpCookie myCookie = new HttpCookie("speaknlearn.com");
@@ -17,64 +22,80 @@ public partial class _Default : System.Web.UI.Page
         {
             user = myCookie["username"];
             ssid = myCookie["sessionid"];
-        }
 
+        }
         else
         {
-            Response.Redirect("login.aspx");
+            Response.Redirect("login.aspx#login");
         }
 
-        Label1.Text = "<h3>WELCOME " + user + ",</h3>";
-
-        string config = ConfigurationManager.ConnectionStrings["unitnamedata2"].ConnectionString;
-        MySqlConnection con2 = new MySqlConnection(config);
-        con2 = new MySql.Data.MySqlClient.MySqlConnection();
-        con2.ConnectionString = config;
-        string sql2 = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'data2' AND TABLE_NAME = 'unitnames'";
-        MySqlCommand cmd2 = new MySqlCommand(sql2, con2);
-        con2.Open();
-        string count2 = cmd2.ExecuteScalar().ToString();
-        con2.Close();
-
-
-        string config2 = ConfigurationManager.ConnectionStrings["data2ConnectionString"].ConnectionString;
-        MySqlConnection con3 = new MySqlConnection(config2);
-        con3 = new MySql.Data.MySqlClient.MySqlConnection();
-        con3.ConnectionString = config2;
-
-        string sql3 = "SELECT * from unitnames";
-        MySqlCommand cmd3 = new MySqlCommand(sql3, con3);
-        con3.Open();
-        cmd3.ExecuteNonQuery();
-
-        int count = int.Parse(count2);
-
-        MySqlDataAdapter dt = new MySqlDataAdapter(cmd3);
-        DataSet ds = new DataSet();
-
-        int i = 0;
-
-        dt.Fill(ds);
-        string[] str = new string[count];
-
-        foreach (DataRow row in ds.Tables[0].Rows)
+        var regex2 = new Regex("^[\'|\"]*$");
+        if (regex2.IsMatch(user) || regex2.IsMatch(ssid))
         {
-            str[i] = row["unitname"].ToString();
-            i++;
+            Response.Redirect("login.aspx#login");
         }
-
-        dt.Dispose();
-        con3.Close();
-
-        for(int j=0; j<count; j++)
+        else
         {
-            string odev = "<h2><b>Unit - " + (j+1) + "</b></h2>";
-            HyperLink odevlink = new HyperLink();
-            odevlink.Text = odev;
-            odevlink.NavigateUrl = "exercises.aspx?unit=" + str[j];
-            
-            Panel1.Controls.Add(odevlink);
-            Panel1.Controls.Add(new LiteralControl("<br />"));
+            string config7 = ConfigurationManager.ConnectionStrings["data2ConnectionString"].ConnectionString;
+            MySqlConnection comm = new MySqlConnection(config7);
+            comm = new MySql.Data.MySqlClient.MySqlConnection();
+            comm.ConnectionString = config7;
+
+            string check = "SELECT sifre FROM kullanici WHERE kullaniciadi = @Kullaniciadi";
+            MySqlCommand cmd7 = new MySqlCommand(check, comm);
+            cmd7.Parameters.AddWithValue("@Kullaniciadi", user);
+
+            comm.Open();
+
+            string encryptedpass2 = cmd7.ExecuteScalar().ToString();
+            string encryptedpass = EncryptDecrypt.Decrypt(encryptedpass2, true);
+
+            comm.Close();
+
+            if (EncryptDecrypt.Decrypt(ssid, true) != encryptedpass)
+            {
+                Response.Redirect("login.aspx#login");
+            }
+            else
+            {
+                Label12.Text = "<h3>Welcome " + user + ",</h3>";
+            }
         }
+    }
+
+
+    protected void LinkButton1_Click(object sender, EventArgs e)
+    {
+        
+        if (Request.Cookies["username"] != null)
+        {
+            Response.Cookies["username"].Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies["sessionid"].Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies["password"].Expires = DateTime.Now.AddDays(-1);
+            Session.Clear();
+            Session.Abandon();
+            FormsAuthentication.SignOut();
+        }
+
+    }
+
+    protected void study_Click(object sender, EventArgs e)
+    {
+        MainFrame.Attributes.Add("src", "study.aspx");
+    }
+
+    protected void media_Click(object sender, EventArgs e)
+    {
+        MainFrame.Attributes.Add("src", "media.aspx");
+    }
+
+    protected void game_Click(object sender, EventArgs e)
+    {
+        MainFrame.Attributes.Add("src", "game.aspx");
+    }
+
+    protected void stats_Click(object sender, EventArgs e)
+    {
+        MainFrame.Attributes.Add("src", "stats.aspx");
     }
 }

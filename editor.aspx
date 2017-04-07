@@ -35,8 +35,10 @@
             &nbsp;</p>
         <p class="auto-style2">
             &nbsp;</p>
-        <p class="auto-style2">
-            &nbsp;</p>
+
+
+        <p class='right'>&nbsp;</p>
+<p class='wrong'>&nbsp;</p>
     
     </div>
     </form>

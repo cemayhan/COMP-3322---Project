@@ -13,6 +13,8 @@ public partial class view : System.Web.UI.Page
         if (!IsPostBack)
         {
             DataBounds();
+
+            
         }
     }
 

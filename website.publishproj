@@ -18,7 +18,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.30319</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{876cce37-f6e1-4568-a580-d98e145fe61e}</ProjectGuid>
+    <ProjectGuid>{0da38733-306a-44e0-af3e-a639635c9815}</ProjectGuid>
     <SourceWebPhysicalPath>$(MSBuildThisFileDirectory)</SourceWebPhysicalPath>
     <SourceWebVirtualPath>/turkish</SourceWebVirtualPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>

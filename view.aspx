@@ -18,6 +18,7 @@
             <asp:ListItem>kullanici</asp:ListItem>
             <asp:ListItem>questions</asp:ListItem>
             <asp:ListItem>scores</asp:ListItem>
+            <asp:ListItem>unitnames</asp:ListItem>
         </asp:DropDownList>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Show Table" />

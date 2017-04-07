@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="exercises.aspx.cs" Inherits="exercises" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="readnspeak.aspx.cs" Inherits="exercises" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">

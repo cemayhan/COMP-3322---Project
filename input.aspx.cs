@@ -2,6 +2,8 @@
 using MySql.Data.MySqlClient;
 using MySql.Data;
 using System.Configuration;
+using System.Globalization;
+
 public partial class input : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -18,16 +20,24 @@ public partial class input : System.Web.UI.Page
 
         string unitname = TextBox11.Text;
 
-        
-        MySqlCommand cmd = new MySqlCommand("ALTER TABLE questions ADD "+unitname+ " VARCHAR(128) COLLATE utf8_unicode_ci AFTER ID ", con);
+        //creating column unitname
+        MySqlCommand cmd = new MySqlCommand("ALTER TABLE questions ADD "+unitname+" CHAR(128) COLLATE utf8_unicode_ci AFTER ID", con);
         con.Open();
         cmd.ExecuteNonQuery();
 
-        cmd = new MySqlCommand("INSERT INTO unitnames(unitname) VALUES ('" + unitname + "')", con);
+        //inserting data into unitnames table (unitname, duedate, submitdate)
+        cmd = new MySqlCommand("INSERT INTO unitnames(unitname,duedate,submitdate) VALUES (@Unitname,@Duedate,@Submitdate)", con);
+        cmd.Parameters.AddWithValue("@Unitname", unitname);
+        DateTime submitdate = DateTime.Now;
+        DateTime duedate = DateTime.ParseExact(TextBox12.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+        cmd.Parameters.AddWithValue("@Duedate", duedate);
+        cmd.Parameters.AddWithValue("@Submitdate", submitdate);
         cmd.ExecuteNonQuery();
 
-        cmd = new MySqlCommand("ALTER TABLE scores ADD "+unitname+ " INT(3) COLLATE utf8_unicode_ci", con);
+        //adding unitname into scores table
+        cmd = new MySqlCommand("ALTER TABLE scores ADD "+unitname+" CHAR(16) COLLATE utf8_unicode_ci", con);
         cmd.ExecuteNonQuery();
+
         con.Close();
 
         string[] si = new string[10];
