@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     
-    <link rel="icon" href="images/favicon.png" type="image/png" />
+    <link rel="icon" href="images/favicon-32x32.png" type="image/png" sizes="32x32"/>
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
     <title></title>
     <script type="text/javascript" src="/dummy.js"></script>

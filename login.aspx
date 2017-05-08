@@ -3,7 +3,7 @@
 <html>
 <head>
     
-<link rel="icon" href="images/favicon.png" type="image/png" />
+<link rel="icon" href="images/favicon-32x32.png" type="image/png" sizes="32x32"/>
 <meta name="theme-color" content="#ffffff" charset="UTF-8" >
     
     <title>Sign-Up/Login Form</title>
@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" defaultbutton="Button1">
         <center><br /><br /><asp:Label ID="errormessage" runat="server" /></center>
       
         <div class="form">

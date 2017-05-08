@@ -304,5 +304,12 @@
         </tr>
     </table>
     </div>
+    <script type="text/javascript">
+    function theFunction() {
+        window.opener.location.href = window.opener.location.href;
+        window.parent.location.reload();
+        return true;
+    }
+</script>
 </body>
 </html>

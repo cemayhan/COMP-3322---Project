@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<head runat="server"><link rel="icon" href="images/favicon-32x32.png" type="image/png" sizes="32x32"/>
     <title></title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 </head>
@@ -18,7 +18,10 @@
             <asp:ListItem>kullanici</asp:ListItem>
             <asp:ListItem>questions</asp:ListItem>
             <asp:ListItem>scores</asp:ListItem>
+            <asp:ListItem>scores2</asp:ListItem>
             <asp:ListItem>unitnames</asp:ListItem>
+            <asp:ListItem>temp</asp:ListItem>
+            <asp:ListItem>chat</asp:ListItem>
         </asp:DropDownList>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Show Table" />

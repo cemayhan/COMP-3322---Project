@@ -59,6 +59,12 @@ public partial class _Default : System.Web.UI.Page
             else
             {
                 Label12.Text = "<h3>Welcome " + user + ",</h3>";
+
+                cmd7 = new MySqlCommand("UPDATE temp SET "+user+" = ''", comm);
+              //  cmd7.Parameters.AddWithValue("@Username", user);
+                comm.Open();
+                cmd7.ExecuteNonQuery();
+                comm.Close();
             }
         }
     }
@@ -67,15 +73,15 @@ public partial class _Default : System.Web.UI.Page
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
         
-        if (Request.Cookies["username"] != null)
-        {
-            Response.Cookies["username"].Expires = DateTime.Now.AddDays(-1);
-            Response.Cookies["sessionid"].Expires = DateTime.Now.AddDays(-1);
-            Response.Cookies["password"].Expires = DateTime.Now.AddDays(-1);
+       
+            Response.Cookies["speaknlearn.com"].Expires = DateTime.Now.AddDays(-1);
             Session.Clear();
             Session.Abandon();
             FormsAuthentication.SignOut();
-        }
+            Roles.DeleteCookie();
+            Session.Clear();
+            Response.Redirect("login.aspx#login");
+        
 
     }
 
@@ -86,12 +92,12 @@ public partial class _Default : System.Web.UI.Page
 
     protected void media_Click(object sender, EventArgs e)
     {
-        MainFrame.Attributes.Add("src", "media.aspx");
+        MainFrame.Attributes.Add("src", "speakingtest.aspx");
     }
 
     protected void game_Click(object sender, EventArgs e)
     {
-        MainFrame.Attributes.Add("src", "game.aspx");
+        MainFrame.Attributes.Add("src", "practice.aspx");
     }
 
     protected void stats_Click(object sender, EventArgs e)

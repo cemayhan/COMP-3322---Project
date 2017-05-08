@@ -1,16 +1,32 @@
-﻿using System;
-using System.Data;
-using MySql.Data.MySqlClient;
-using System.Web;
-using System.Configuration;
-using System.Web.UI.WebControls;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
-public partial class exercises : System.Web.UI.Page
+public partial class deney : System.Web.UI.Page
 {
-    public void Page_Load(object sender, EventArgs e)
+    int m = 0;
+    string[] str;
+    List<LinkButton> linlist = new List<LinkButton> { };
+    int soru = 0;
+    int no;
+    string kelime;
+    string test2;
+    string kullanici;
+    double grade;
+    int keep;
+    string urluser;
+    private string TestUrl;
+    //double[] Score;
+    protected void Page_Load(object sender, EventArgs e)
     {
+
         HttpCookie myCookie = new HttpCookie("speaknlearn.com");
         myCookie = Request.Cookies["speaknlearn.com"];
         string user = null;
@@ -22,7 +38,9 @@ public partial class exercises : System.Web.UI.Page
         else
         {
             user = myCookie["username"];
+            kullanici = user;
             ssid = myCookie["sessionid"];
+            urluser = user;
         }
 
         ssid = EncryptDecrypt.Decrypt(ssid, true);
@@ -36,249 +54,248 @@ public partial class exercises : System.Web.UI.Page
         else
         {
 
+
             string config = ConfigurationManager.ConnectionStrings["data2ConnectionString"].ConnectionString;
             MySqlConnection conn = new MySqlConnection(config);
-
 
             conn = new MySql.Data.MySqlClient.MySqlConnection();
             conn.ConnectionString = config;
 
-
-
-            string giris = "SELECT sifre FROM kullanici WHERE kullaniciadi = @Kullaniciadi";
+            string giris = "SELECT COUNT(*) FROM kullanici WHERE kullaniciadi = @Kullaniciadi";
             MySqlCommand cmd = new MySqlCommand(giris, conn);
             cmd.Parameters.AddWithValue("@Kullaniciadi", user);
             conn.Open();
 
-            string decryptedpass = EncryptDecrypt.Decrypt(cmd.ExecuteScalar().ToString(), true);
+            int num;
+            int.TryParse((cmd.ExecuteScalar().ToString()), out num);
 
-            conn.Close();
-
-            if (ssid != decryptedpass)
+            if (num != 1)
             {
                 Response.Redirect("login.aspx");
             }
             else
             {
-                string test2;
-                var regexItem = new Regex("^[a-zA-Z0-9]*$");
-                test2 = Request.QueryString["unit"];
 
-                if (Request.QueryString["unit"] == null && regexItem.IsMatch(test2))
+                giris = "SELECT sifre FROM kullanici WHERE kullaniciadi = @Kullaniciadi";
+                cmd = new MySqlCommand(giris, conn);
+                cmd.Parameters.AddWithValue("@Kullaniciadi", user);
+
+
+                string decryptedpass = EncryptDecrypt.Decrypt(cmd.ExecuteScalar().ToString(), true);
+
+                conn.Close();
+
+                if (ssid != decryptedpass)
                 {
-                    Response.Redirect("default.aspx");
+                    Response.Redirect("login.aspx");
                 }
                 else
                 {
+                    var regexItem = new Regex("^[a-zA-Z0-9]*$");
+                    test2 = Request.QueryString["unit"];
 
-
-                    MySqlConnection con2 = new MySqlConnection(config);
-                    con2 = new MySql.Data.MySqlClient.MySqlConnection();
-                    con2.ConnectionString = config;
-                    string sql2 = "Select * from questions";
-                    MySqlCommand cmd2 = new MySqlCommand(sql2, con2);
-                    con2.Open();
-                    MySqlDataAdapter dt = new MySqlDataAdapter(cmd2);
-                    DataSet ds = new DataSet();
-
-                    int i = 0;
-
-                    dt.Fill(ds);
-                    string[] str = new string[10];
-                    var labels = new List<Label>()
-            {
-                Label1,Label2,Label3,Label4,Label5,Label6,Label7,Label8,Label9,Label10
-            };
-
-                    foreach (DataRow row in ds.Tables[0].Rows)
+                    if (Request.QueryString["unit"] == null && regexItem.IsMatch(test2))
                     {
-                        str[i] = row[test2].ToString();
-
-                        labels[i].Text = str[i];
-                        labels[i].Attributes.CssStyle.Value = ("text-align: center; font-family: 'Comic Sans MS', cursive, sans-serif; text-size: 10px;");
-
-                        i++;
+                        Response.Redirect("default.aspx");
                     }
+                    else
+                    {
+                        MySqlConnection con2 = new MySqlConnection(config);
+                        con2 = new MySql.Data.MySqlClient.MySqlConnection();
+                        con2.ConnectionString = config;
 
-                    dt.Dispose();
-                    con2.Close();
+                        MySqlCommand cmd2 = new MySqlCommand("SELECT COUNT(" + test2 + ") FROM questions WHERE " + test2 + " <> ''", con2);
+                        // cmd2.Parameters.AddWithValue("@Unitname", test2);
+                        int qnumber;
+
+                        con2.Open();
+
+                        string nomera = cmd2.ExecuteScalar().ToString();
+                        int.TryParse(nomera, out qnumber);
+
+
+                        str = new string[qnumber];
+
+
+
+                        string sql2 = "SELECT * FROM questions WHERE " + test2 + " <> ''";
+                        cmd2 = new MySqlCommand(sql2, con2);
+                        // cmd2.Parameters.AddWithValue("@Unitname", test2);
+                        cmd2.ExecuteNonQuery();
+
+                        MySqlDataAdapter dt = new MySqlDataAdapter(cmd2);
+                        DataSet ds = new DataSet();
+
+                        int i = 0;
+
+                        dt.Fill(ds);
+                        int kura;
+
+                        foreach (DataRow row in ds.Tables[0].Rows)
+                        {
+
+                            str[i] = row[test2].ToString();
+
+                            i++;
+
+
+                        }
+                        kura = i;
+                        dt.Dispose();
+                        con2.Close();
+                        Label1.Text = "<br />" + str[m];
+
+                        TableRow tRow = new TableRow();
+                        Table1.Rows.Add(tRow);
+                        string[] text = new string[3];
+
+                        for (i = 0; i < kura; i++)
+                        {
+                            TableCell tCell = new TableCell();
+                            LinkButton link1 = new LinkButton();
+                            tRow.Cells.Add(tCell);
+
+                            link1.Text = (i + 1).ToString();
+                            link1.ID = (i + 1).ToString();
+                            link1.Click += new System.EventHandler(LinkButton1_Click);
+                            link1.Attributes.Add("runat", "server");
+                            link1.Attributes.Add("style", "border: 2px solid #0600b8;width:28px;height:25px; text-align: center;vertical-align: central;vertical-align: middle;margin: auto;display: inline-block;color: white;background-color: #78777a;)");
+
+                            //Ceviri cv = new Ceviri();
+                            //string tercume = cv.Translate(str[i], "de", "en");
+
+                            //link1.Attributes.Add("TITLE", tercume);
+
+
+                            tCell.Controls.Add(link1);
+                            linlist.Add(link1);
+
+                        }
+
+
+                    }
                 }
             }
         }
-    }
-    protected void Button2_Click1(object sender, System.Web.UI.ImageClickEventArgs e)
-    {
-        Response.Redirect("default.aspx");
+
+
+
     }
 
-    protected void Button1_Click1(object sender, EventArgs e)
+
+
+    protected void Next_Click(object sender, ImageClickEventArgs e)
     {
-        HttpCookie myCookie = new HttpCookie("speaknlearn.com");
-        myCookie = Request.Cookies["speaknlearn.com"];
-        string user = null;
-        string ssid = null;
-        if (myCookie == null)
+
+        // System.Threading.Thread.Sleep(700);
+
+
+        Int32.TryParse(Label5.Text, out no);
+        no++;
+
+        if (no == str.Length)
         {
-            Response.Redirect("login.aspx#login");
+            no = 0;
+        }
+
+        Label1.Text = "<br />" + str[no];
+        ImageButton1.Attributes.Add("OnClick", "ImageButton1_Click");
+
+        Label5.Text = no.ToString();
+        Label5.Visible = false;
+        Label5.Attributes.Add("style", "display:none;");
+
+
+
+    }
+
+
+    protected void Check_Click(object sender, ImageClickEventArgs e)
+    {
+
+        string config = ConfigurationManager.ConnectionStrings["data2ConnectionString"].ConnectionString;
+        MySqlConnection conn = new MySqlConnection(config);
+        conn = new MySql.Data.MySqlClient.MySqlConnection();
+        conn.ConnectionString = config;
+        conn.Open();
+
+        Int32.TryParse(Label5.Text, out no);
+
+        str[no] = str[no].Trim(new char[] { '?', '.', ',' });
+        string test = CalculateSimilarity(str[no].ToLower(), (TextBox2.Text).ToLower()).ToString();
+
+        string cheater = CalculateSimilarity(str[no].ToLower(), (TextBox1.Text).ToLower()).ToString();
+        if (TextBox1.Text != null && test != cheater)
+        {
+                Label1.Text = "Cheating is bad, you are recorded as a cheater, you have been warned!";
+            
         }
         else
         {
-            user = myCookie["username"];
-            ssid = myCookie["sessionid"];
-        }
+            
 
-        ssid = EncryptDecrypt.Decrypt(ssid, true);
+            double score;
+            double.TryParse(test, out score);
 
-        var passcheck = new Regex("('(''|[^'])*')|(;)|(\b(ALTER|CREATE|DELETE|DROP|EXEC(UTE){0,1}|INSERT( +INTO){0,1}|MERGE|SELECT|UPDATE|UNION( +ALL){0,1})\b)");
-
-        if (passcheck.IsMatch(user) || passcheck.IsMatch(ssid))
-        {
-            Response.Redirect("login.aspx");
-        }
-        else
-        {
-
-            string config = ConfigurationManager.ConnectionStrings["data2ConnectionString"].ConnectionString;
-            MySqlConnection conn = new MySqlConnection(config);
-
-
-            conn = new MySql.Data.MySqlClient.MySqlConnection();
-            conn.ConnectionString = config;
-
-
-
-            string giris = "SELECT sifre FROM kullanici WHERE kullaniciadi = @Kullaniciadi";
-            MySqlCommand cmd = new MySqlCommand(giris, conn);
-            cmd.Parameters.AddWithValue("@Kullaniciadi", user);
-            conn.Open();
-
-            string decryptedpass = EncryptDecrypt.Decrypt(cmd.ExecuteScalar().ToString(), true);
-
-            conn.Close();
-
-            if (ssid != decryptedpass)
+            if(score > 0.69d)
             {
-                Response.Redirect("login.aspx");
+                score = 1d;
+            }
+
+            score = Math.Round((score * 10d), 3);
+            int temp;
+
+            MySqlCommand cmd = new MySqlCommand("UPDATE temp SET " + kullanici + " = @Score WHERE ID = @No", conn);
+            // cmd.Parameters.AddWithValue("Username", kullanici);
+            cmd.Parameters.AddWithValue("@Score", score.ToString());
+            cmd.Parameters.AddWithValue("@No", no + 1);
+            int.TryParse(cmd.ExecuteNonQuery().ToString(), out temp);
+            cmd = new MySqlCommand("SELECT " + test2 + " FROM scores WHERE kullaniciadi = @Username", conn);
+            cmd.Parameters.AddWithValue("@Username", kullanici);
+            double terazi;
+            double.TryParse(cmd.ExecuteScalar().ToString(), out terazi);
+
+
+            cmd = new MySqlCommand("UPDATE scores SET " + test2 + " = IF((SELECT SUM(" + kullanici + ") FROM temp WHERE @Username IS NOT NULL AND @Username <> '') > " + terazi + " ,(SELECT SUM(" + kullanici + ") FROM temp WHERE @Username IS NOT NULL AND @Username <> ''), '" + terazi + "') WHERE kullaniciadi = @Username", conn);
+
+            cmd.Parameters.AddWithValue("@Username", kullanici);
+            //cmd.Parameters.AddWithValue("@Unitname", test2);
+            int.TryParse(cmd.ExecuteNonQuery().ToString(), out temp);
+
+
+
+            string text = str[no];
+            TextBox1.Text = "";
+            TextBox2.Text = "";
+
+            if (score > 6.9d)
+            {
+                Label1.Text = text + "      = <font color=green size=5px>  &#10004;</font>" + "  %" + score * 10d;
+                linlist.ElementAt((no)).Attributes.Add("style", "border: 2px solid #0600b8;width:28px;height:25px; text-align: center;vertical-align: central;vertical-align: middle;margin: auto;display: inline-block;color: #720309;background-color: #00ff11;");
             }
             else
             {
-                string test2;
-                var regexItem = new Regex("^[a-zA-Z0-9]*$");
-                test2 = Request.QueryString["unit"];
-
-                if (Request.QueryString["unit"] == null && regexItem.IsMatch(test2))
-                {
-                    Response.Redirect("default.aspx");
-                }
-                else
-                {
-                    MySqlConnection con3 = new MySqlConnection(config);
-                    con3 = new MySql.Data.MySqlClient.MySqlConnection();
-                    con3.ConnectionString = config;
-                    string sql3 = "Select * from questions";
-                    MySqlCommand cmd3 = new MySqlCommand(sql3, con3);
-                    con3.Open();
-
-                    MySqlDataAdapter dt2 = new MySqlDataAdapter(cmd3);
-                    DataSet ds2 = new DataSet();
-
-                    int i = 0;
-
-                    dt2.Fill(ds2);
-                    string[] str = new string[10];
-
-                    foreach (DataRow row in ds2.Tables[0].Rows)
-                    {
-                        str[i] = row[test2].ToString().ToLower();
-                        i++;
-                    }
-
-                    dt2.Dispose();
-                    con3.Close();
-
-                    var textboxes = new List<TextBox>()
-            {
-                TextBox1,TextBox2,TextBox3,TextBox4,TextBox5,TextBox6,TextBox7,TextBox8,TextBox9,TextBox10
-            };
-
-                    var labels = new List<Label>()
-            {
-                Label1,Label2,Label3,Label4,Label5,Label6,Label7,Label8,Label9,Label10
-            };
-
-                    string[] ans = new string[10];
-
-                    for (int k = 0; k < textboxes.Count; k++)
-                    {
-                        ans[k] = textboxes[k].Text.ToLower();
-                    }
-
-
-                    double score = 0;
-                    double[] score2 = new double[10];
-                    double pass = 0.5;
-                    double accuracy = 0;
-                    string atrue = "<font color=green size=5px>  &#10004;</font>";
-                    string afalse = "<font color=red size=5px>  &#10006;</font>";
-
-                    for (int j = 0; j < 10; j++)
-                    {
-                        score2[j] = CalculateSimilarity(str[j], ans[j]);
-                        score += Math.Round((score2[j] * 10), 0);
-                        accuracy += score2[j];
-                        if (score2[j] > pass)
-                        {
-                            string kelime = (Math.Round((score2[j] * 100d), 3).ToString());
-                            labels[j].Text += atrue + " %" + kelime;
-                        }
-                        else
-                        {
-                            string kelime = (Math.Round((score2[j] * 100d), 3).ToString());
-                            labels[j].Text += afalse + " %" + kelime;
-                        }
-                    }
-
-
-                    if (score < 70)
-                    {
-                        Label11.Text = "Your Total Score is = <font color='red'><h1>" + score + "</h1></font>";
-                    }
-                    if (score > 69 && score < 80)
-                    {
-                        Label11.Text = "Your Total Score is = <font color='orange'><h1>" + score + "</h1></font>";
-                    }
-                    if (score > 79 && score < 90)
-                    {
-                        Label11.Text = "Your Total Score is = <font color='yellow'><h1>" + score + "</h1></font>";
-                    }
-                    if (score > 89 && score < 101)
-                    {
-                        Label11.Text = "Your Total Score is = <font color='lightgreen'><h1>" + score + "</h1></font>";
-                    }
-                    con3.Open();
-
-                    cmd3 = new MySqlCommand("select " + test2 + " from scores where kullaniciadi = @Kullaniciadi", con3);
-                    cmd3.Parameters.AddWithValue("@Kullaniciadi", user);
-                    int number = int.Parse(cmd3.ExecuteScalar().ToString());
-                    accuracy = accuracy * 10;
-                    if (number < score)
-                    {
-
-                        cmd = new MySqlCommand("UPDATE scores SET " + test2 + " = @Score, accuracy = @Accuracy WHERE kullaniciadi = @Kullaniciadi", con3);
-
-                        cmd.Parameters.AddWithValue("@Score", score);
-                        cmd.Parameters.AddWithValue("@Accuracy", accuracy);
-                        cmd.Parameters.AddWithValue("@Kullaniciadi", user);
-                        cmd.ExecuteNonQuery();
-                        cmd.Dispose();
-                        con3.Close();
-                    }
-
-                }
+                Label1.Text = text + "      = <font color=red size=5px>  &#10006;</font>" + "  %" + score * 10d;
+                linlist.ElementAt((no)).Attributes.Add("style", "border: 2px solid #0600b8;width:28px;height:25px; text-align: center;vertical-align: central;vertical-align: middle;margin: auto;display: inline-block;color: #720309;background-color: #ff0000;");
             }
+
+
+            cmd.Dispose();
+            conn.Close();
         }
     }
 
+    protected void LinkButton1_Click(object sender, EventArgs e)
+    {
+        string id = (((LinkButton)sender).ClientID).ToString();
+        Int32.TryParse(id, out no);
+        Label5.Text = (no - 1).ToString();
+        Label5.Visible = false;
+        Label5.Attributes.Add("style", "display:none;");
+        Label1.Text = "<br />" + str[no - 1];
+
+
+    }
     int ComputeLevenshteinDistance(string source, string target)
     {
         if ((source == null) || (target == null)) return 0;
@@ -323,21 +340,5 @@ public partial class exercises : System.Web.UI.Page
 
         int stepsToSame = ComputeLevenshteinDistance(source, target);
         return (1.0 - ((double)stepsToSame / (double)Math.Max(source.Length, target.Length)));
-    }
-
-
-
-
-    public static bool hack(string str)
-    {
-        string specialCharacters = @"%!@#$%^&*()?/>.<,:;'\|}]{[_~`+=-" + "\"";
-        char[] specialCharactersArray = specialCharacters.ToCharArray();
-
-        int index = str.IndexOfAny(specialCharactersArray);
-        //index == -1 no special characters
-        if (index == -1)
-            return false;
-        else
-            return true;
     }
 }

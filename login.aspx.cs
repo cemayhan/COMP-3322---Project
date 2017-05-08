@@ -63,9 +63,11 @@ public partial class register : System.Web.UI.Page
                 }
 
                 errormessage.Text = "<h2>Incorrectly entered data(s) is/are :<font color=red> " + data + " </font><br /> Please correctly input these <font color=red>" + field + "</font> field(s) to the registration form. <br /> Please, avoid using any special characters except <font color=green> space </font>and <font color=green>'-'</font>. <br /><br />";
-                
 
-                Response.Write("<button onclick='goBack()'>Go Back </button> <script> function goBack() {window.history.back();} </script>");
+
+                //Response.Write("<button onclick='goBack()'>Go Back </button> <script> function goBack() {window.history.back();} </script>");
+                Response.Redirect("login.aspx#login");
+
 
 
 
@@ -108,6 +110,13 @@ public partial class register : System.Web.UI.Page
                     MySqlCommand cmd3 = new MySqlCommand("INSERT INTO scores(kullaniciadi) VALUES (@Studentname)", conn);
                     cmd3.Parameters.AddWithValue("@Studentname", kullaniciadi);
                     cmd3.ExecuteNonQuery();
+                    conn.Close();
+
+                    cmd3 = new MySqlCommand("ALTER TABLE temp ADD " + kullaniciadi + " CHAR(128) COLLATE utf8_unicode_ci NOT NULL AFTER ID", conn);
+                    conn.Open();
+                    cmd3.ExecuteNonQuery();
+                    conn.Dispose();
+                    cmd3.Dispose();
                     conn.Close();
 
                     Session["UserAuthentication"] = username;

@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class study : System.Web.UI.Page
 {
+    
     protected void Page_Load(object sender, EventArgs e)
     {
         HttpCookie myCookie = new HttpCookie("speaknlearn.com");
@@ -67,18 +68,21 @@ public partial class study : System.Web.UI.Page
                 con3 = new MySql.Data.MySqlClient.MySqlConnection();
                 con3.ConnectionString = config2;
 
-                string sql3 = "SELECT * FROM unitnames";
+                cmd7 = new MySqlCommand("UPDATE temp SET " + user + " = ''", comm);
+                //  cmd7.Parameters.AddWithValue("@Username", user);
+                comm.Open();
+                cmd7.ExecuteNonQuery();
+                comm.Close();
+
+                string sql3 = "SELECT * FROM unitnames WHERE DATE(duedate) >= DATE(NOW())";
                 MySqlCommand cmd3 = new MySqlCommand(sql3, con3);
                 con3.Open();
                 cmd3.ExecuteNonQuery();
 
-                string sql6 = "SELECT COUNT(kullaniciadi) FROM scores";
-                MySqlCommand cmd4 = new MySqlCommand(sql6, con3);
-                int sayi = int.Parse(cmd4.ExecuteScalar().ToString());
-
-                string sql2 = "SELECT COUNT(unitname) FROM unitnames";
-                cmd4 = new MySqlCommand(sql2, con3);
-                int count = int.Parse(cmd4.ExecuteScalar().ToString());
+                string sql2 = "SELECT COUNT(unitname) FROM unitnames WHERE DATE(duedate) >= DATE(NOW())";
+                MySqlCommand cmd4 = new MySqlCommand(sql2, con3);
+                int count;
+                int.TryParse((cmd4.ExecuteScalar().ToString()), out count);
 
 
 
@@ -92,17 +96,21 @@ public partial class study : System.Web.UI.Page
                 string[] duedate = new string[count];
                 string[] submitdate = new string[count];
 
+
+
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
+
                     str[i] = row["unitname"].ToString();
                     duedate[i] = row["duedate"].ToString();
                     submitdate[i] = row["submitdate"].ToString();
                     i++;
+
                 }
                 dt.Dispose();
 
-                string[] grade = new string[sayi];
-                double[] accuracy = new double[sayi];
+                string[] grade = new string[count];
+                string[] accuracy = new string[count];
 
                 int roka = 0;
 
@@ -124,10 +132,60 @@ public partial class study : System.Web.UI.Page
 
                     foreach (DataRow rower in des.Tables[0].Rows)
                     {
-                        grade[roka] = rower[(str[roka])].ToString();
-                        accuracy[roka] = Math.Round((double.Parse(rower[(str[roka])].ToString())),2);
+                        string text3 = rower[(str[roka])].ToString();
+
+                        if (text3 != null || text3 != "")
+                        {
+                            grade[roka] = text3;
+                        }
+                        else
+                        {
+                            grade[roka] = "0";
+                        }
+
+
                         roka++;
+
                     }
+
+
+                    det.Dispose();
+                }
+
+                roka = 0;
+
+                for (int g = 0; g < count; g++)
+                {
+
+                    string sql1 = "SELECT * FROM scores WHERE kullaniciadi = @User";
+                    cmd4 = new MySqlCommand(sql1, con3);
+                    cmd4.Parameters.AddWithValue("@User", user);
+                    cmd4.ExecuteNonQuery();
+
+                    MySqlDataAdapter det = new MySqlDataAdapter(cmd4);
+                    DataSet des = new DataSet();
+
+
+                    det.Fill(des);
+
+
+
+                    foreach (DataRow rower in des.Tables[0].Rows)
+                    {
+                        if (rower["accuracy"].ToString() != null || rower["accuracy"].ToString() != "")
+                        {
+                            accuracy[roka] = rower["accuracy"].ToString();
+                        }
+                        else
+                        {
+                            accuracy[roka] = "0";
+
+                        }
+
+                        roka++;
+
+                    }
+
                     det.Dispose();
                 }
 
@@ -176,7 +234,9 @@ public partial class study : System.Web.UI.Page
                     {
                         if (iki < count)
                         {
-                            labels[a].Text = "<a href ='exercises.aspx?unit=" + str[iki] + "' target=&#x22;_blank&#x22;>Unit " + (iki + 1) + "</a>";
+
+                            labels[a].Text = "<a href ='readnspeak.aspx?unit=" + str[iki] + "' target=&#x22;_blank&#x22;>Read&Speak " + (iki + 1) + "</a> <br /><a href ='listennspeak.aspx?unit=" + str[iki] + "' target=&#x22;_blank&#x22;>Listen&Speak " + (iki + 1) + "</a> ";
+                            //labels[a].Text = "<a href ='practice.aspx' target=&#x22;_blank&#x22;> assignment instead of test (test grade) </a>";
                             iki++;
                         }
                         else
@@ -206,7 +266,11 @@ public partial class study : System.Web.UI.Page
                     {
                         if (dort < count)
                         {
-                            labels[a].Text = "%" + accuracy[dort].ToString();
+                            double tere;
+                            double.TryParse(accuracy[dort], out tere);
+                            tere = Math.Round(tere, 3);
+                            labels[a].Text = "%" + tere.ToString();
+                            labels[a].Text = "NA";
                             dort++;
                         }
                         else
@@ -250,8 +314,9 @@ public partial class study : System.Web.UI.Page
 
                         if (yedi < count)
                         {
-                            int skara = int.Parse(sonuc[yedi].ToString());
-                            if(skara > 69)
+                            int skara;
+                            Int32.TryParse((sonuc[yedi].ToString()), out skara);
+                            if (skara > 69)
                             {
                                 labels[a].Text = atrue + " &#9786;</p><font color=black>";
                             }
@@ -282,5 +347,9 @@ public partial class study : System.Web.UI.Page
                 }
             }
         }
+
+        
+        
     }
+    
 }

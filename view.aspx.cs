@@ -14,7 +14,14 @@ public partial class view : System.Web.UI.Page
         {
             DataBounds();
 
-            
+            //Response.Write(EncryptDecrypt.Decrypt("iNGvNkkgwFQPIql+QD7WYw==", true));
+            string av = Request.QueryString["naber"];
+
+            if (av != null)
+            {
+                showtable2(av);
+            }
+
         }
     }
 
@@ -103,6 +110,49 @@ public partial class view : System.Web.UI.Page
     protected void showtable()
     {
         string s = DropDownList1.SelectedItem.Text;
+        Response.Write("<br /><br /><br />");
+        //Populating a DataTable from database.
+        DataTable dt = this.GetData(s);
+
+        //Building an HTML string.
+        StringBuilder html = new StringBuilder();
+
+        //Table start.
+        html.Append("<table border = '1'>");
+
+        //Building the Header row.
+        html.Append("<tr>");
+        foreach (DataColumn column in dt.Columns)
+        {
+            html.Append("<th>");
+            html.Append(column.ColumnName);
+            html.Append("</th>");
+        }
+        html.Append("</tr>");
+
+        //Building the Data rows.
+        foreach (DataRow row in dt.Rows)
+        {
+            html.Append("<tr>");
+            foreach (DataColumn column in dt.Columns)
+            {
+                html.Append("<td>");
+                html.Append(row[column.ColumnName]);
+                html.Append("</td>");
+            }
+            html.Append("</tr>");
+        }
+
+        //Table end.
+        html.Append("</table>");
+
+        //Append the HTML string to Placeholder.
+        PlaceHolder1.Controls.Add(new Literal { Text = html.ToString() });
+    }
+
+    protected void showtable2(string s)
+    {
+        //string s = DropDownList1.SelectedItem.Text;
         Response.Write("<br /><br /><br />");
         //Populating a DataTable from database.
         DataTable dt = this.GetData(s);

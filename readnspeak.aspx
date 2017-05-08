@@ -1,444 +1,250 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="readnspeak.aspx.cs" Inherits="exercises" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="readnspeak.aspx.cs" Inherits="deney" %>
 
 <!DOCTYPE html>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    
-    <link rel="icon" href="images/favicon.png" type="image/png" />
-<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-    <title></title>
-    <script type="text/javascript" src="/dummy.js"></script>
+<head>
+
+
+    <link rel="icon" href="images/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+
+    <title>Read & Speak Activity</title>
+
     <script type="text/javascript" src="/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="/dummy.js"></script>
 
     <script type='text/javascript'>//<![CDATA[
-window.onload=function(){
- $(function() {
-     $("input:text").keypress(function (event) {
-          event.preventDefault();
-         return false;
-     });
-});
-}//]]> 
+        window.onload = function () {
+            $(function () {
+                $("input:text").keypress(function (event) {
+                    event.preventDefault();
+                    return false;
+                });
+            });
+        }//]]> 
     </script>
     <script type='text/javascript'>//<![CDATA[
-$(function(){
- $("input:text").bind("cut copy paste",function(e2) {
-          e2.preventDefault();
-      });
-});//]]> 
+        $(function () {
+            $("input:text").bind("cut copy paste", function (e2) {
+                e2.preventDefault();
+            });
+        });//]]> 
 
     </script>
-
-    <style>
-        html {
-            background: url(/images/exercisebackground.jpg) no-repeat center center fixed;
-            background-size: cover;
+   
+    
+   
+    <style type="text/css">
+        .auto-style6 {
+            width: 805px;
+            height: 289px;
         }
 
         .auto-style4 {
             font-size: medium;
+            text-align: center;
+            text-emphasis-position: below;
+            vertical-align: middle;
+            margin: auto;
+            display: inline-block;
+            vertical-align: central;
         }
 
-        .auto-style5 {
-            width: 607px;
+        .auto-style7 {
+            width: 791px;
+            height: 312px;
+            text-align: center;
+            vertical-align: middle;
+            margin: auto;
+            display: inline-block;
+            vertical-align: central;
         }
 
-        .auto-style6 {
-            width: 602px;
+        .auto-style8 {
+            text-align: center;
+        }
+
+        div > * {
+            vertical-align: middle;
+            // Align children to middle of line
         }
     </style>
-    
+    <style type="text/css">
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: black;
+            z-index: 99;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+            -moz-opacity: 0.8;
+            min-height: 100%;
+            width: 100%;
+        }
+
+        .loading {
+            font-family: Arial;
+            font-size: 10pt;
+            border: 5px solid #67CFF5;
+            width: 200px;
+            height: 135px;
+            display: none;
+            position: absolute;
+            margin-left: auto;
+            margin-right: auto;
+            left: 50%;
+            right: 50%;
+            background-color: White;
+            z-index: 999;
+            margin-top: auto;
+            margin-bottom: auto;
+            top: 50%;
+            bottom: 50%;
+        }
+
+        .auto-style15 {
+            width: 100%;
+            height: 329px;
+            text-align: center;
+            vertical-align: middle;
+            margin: auto;
+            display: inline-block;
+            vertical-align: central;
+        }
+
+        .auto-style18 {
+            width: 100%;
+            height: 36px;
+            text-align: center;
+            vertical-align: middle;
+            margin: auto;
+            display: inline-block;
+            vertical-align: central;
+        }
+
+        .auto-style19 {
+            height: 174px;
+        }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        function ShowProgress() {
+            setTimeout(function () {
+                var modal = $('<div />');
+                modal.addClass("modal");
+                $('body').append(modal);
+                var loading = $(".loading");
+                loading.show();
+                var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
+                var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
+                loading.css({ top: top, left: left });
+            }, 200);
+        }
+        $('form').live("submit", function () {
+            ShowProgress();
+        });
+    </script>
+
 
 </head>
+<body style="background-color: #edffed">
+    
+   <form id="form2" runat="server" autocomplete="off" defaultbutton="ImageButton2">
+        <div class="auto-style8">
 
-<body>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <asp:Image ID="Image1" src="/images/head.png" runat="server" />
-    <form id="form1" runat="server" accept-charset="utf-8">
-        <div>
-            <table runat="server">
-                <tr>
-                    <td class="auto-style5">Text to Read =&gt;
-        <asp:Label ID="Label1" runat="server" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px" CssClass="auto-style4"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox1" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
+            <div class="auto-style19">
+
+                <asp:Label ID="Label2" runat="server"></asp:Label>
+                <asp:Label ID="Label5" runat="server" Visible="False"></asp:Label>
+                <br />
+
+                <asp:Image ID="Image1" runat="server" ImageUrl="~/images/header-tr.png" Height="154px" Width="811px" />
+                <br />
+                <br />
+
+                <br />
+            </div>
+            <center>
+        <table class="auto-style6" style="border: medium double #000080">
+            <tr>
+                <td class="auto-style18" style="border-style: none none double none; background-color: #CCFFFF; border-top-width: 0px; border-right-width: 0px; border-left-width: 0px; border-bottom-color: #0000FF;">
+                    <asp:Table ID="Table1" runat="server" HorizontalAlign="Center" Width="100%">
+                    </asp:Table>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style15" style="background-color: #CCFFFF">
+        
+                    <br /><br />
+                    <asp:Label ID="Label3" runat="server" Text="Text to Read =&gt;"></asp:Label>
+                    &nbsp;
+                    <asp:Label ID="Label1" runat="server" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="380px" CssClass="auto-style4" BorderColor="White" BorderStyle="Double"></asp:Label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <br /> 
+                    <br />
+                        <asp:Label ID="Label4" runat="server" Text="Your Record =&gt; "></asp:Label>
+&nbsp;<asp:TextBox ID="TextBox1" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in German" BorderColor="#0000CC" BorderStyle="Double"></asp:TextBox>
                         &nbsp;
-        <img onclick="startDictation1()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                    <td class="auto-style6">Text to Read =&gt;
-        <asp:Label ID="Label2" runat="server" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox2" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation2()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                </tr>
-                <tr>
-                    <td class="auto-style5">Text to Read =&gt;
-        <asp:Label ID="Label3" runat="server" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox3" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation3()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                    <td class="auto-style6">Text to Read =&gt;
-        <asp:Label ID="Label4" runat="server" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox4" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation4()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                </tr>
-                <tr>
-                    <td class="auto-style5">Text to Read =&gt;
-        <asp:Label ID="Label5" runat="server" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox5" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation5()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                    <td class="auto-style6">Text to Read =&gt;
-        <asp:Label ID="Label6" runat="server" Text="" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox6" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation6()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                </tr>
-                <tr>
-                    <td class="auto-style5">Text to Read =&gt;
-        <asp:Label ID="Label7" runat="server" Text="" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox7" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation7()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                    <td class="auto-style6">Text to Read =&gt;
-        <asp:Label ID="Label8" runat="server" Text="" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox8" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation8()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                </tr>
-                <tr>
-                    <td class="auto-style5">Text to Read =&gt;
-        <asp:Label ID="Label9" runat="server" Text="" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox9" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation9()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                    <td class="auto-style6">Text to Read =&gt;
-        <asp:Label ID="Label10" runat="server" Text="" Value="" BackColor="DarkBlue" ForeColor="White" Height="64px" Width="388px"></asp:Label>
-                        <br />
-                        Your Record =&gt;
-        <asp:TextBox ID="TextBox10" runat="server" Height="64px" Width="380px" placeholder="Press the Mic Button and Read the text above in Turkish"></asp:TextBox>
-                        &nbsp;
-        <img onclick="startDictation10()" src="/images/mic.png" height="50" width="50" style="vertical-align: middle" /></td>
-                </tr>
-                <tr>
-                    <th colspan="2">
-                        <asp:Label ID="Label11" runat="server" Font-Bold="True" Font-Names="Comic Sans MS" Font-Size="X-Large"></asp:Label>
-                    </th>
-                </tr>
-                <tr>
-                    <th colspan="2">
-                        <asp:ImageButton ID="Button1" OnClick="Button1_Click1" ImageUrl="/images/submit.png" Width="150px" Height="60px" runat="server" />
-                    </th>
-                </tr>
-                <tr>
-                    <th colspan="2" align="right">
-                        <asp:ImageButton ID="ImageButton2" OnClick="Button2_Click1" ImageUrl="/images/backtohm.png" Width="150px" Height="60px" runat="server" />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    </th>
-                </tr>
-            </table>
+        <asp:Image ID="micimage" runat="server" onclick="startDictation1()" src="images/mic.png" height="50" width="50" style="vertical-align: middle" /><br /><br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:ImageButton ID="ImageButton2" runat="server" Height="63px" ImageUrl="~/images/submit2.png" Width="172px" OnClick="Check_Click" CssClass="auto-style7" />
+                                       
+                &nbsp;&nbsp;&nbsp; &nbsp;
+                    <asp:ImageButton ID="ImageButton1" runat="server" Height="63px" ImageUrl="~/images/next.png" Width="172px" OnClick="Next_Click" CssClass="auto-style7" />
+                                       
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                       
+                </td>
+            </tr>
+        </table></center>
+
+
         </div>
-    </form>
+        
+        <asp:Label ID="Label6" runat="server" Visible="false"></asp:Label>
+        
+        <br />
+        <asp:TextBox ID="TextBox2" runat="server" Height="16px" Width="16px" placeholder="Press the Mic Button and Read the text above in German" BorderColor="#EDFFED" BorderStyle="None" BackColor="#EDFFED" BorderWidth="0px" Font-Size="0pt" ForeColor="#EDFFED"></asp:TextBox>
+        
+        <br />
+        
+        </form>
 
-
-    <!-- HTML5 Speech Recognition API -->
-    <script>
-  function startDictation1() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox1').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
+      <div class="loading" align="center">
+            Loading. Please wait.
+            <img src="images/loading.gif" alt="" />
+        </div>
 
     <script>
-  function startDictation2() {
+        function startDictation1() {
 
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+            if (window.hasOwnProperty('webkitSpeechRecognition')) {
 
-      var recognition = new webkitSpeechRecognition();
+                var recognition = new webkitSpeechRecognition();
 
-      recognition.continuous = false;
-      recognition.interimResults = false;
+                recognition.continuous = false;
+                recognition.interimResults = false;
 
-      recognition.lang = "tr-TR";
-      recognition.start();
+                recognition.lang = "tr-TR";
+                recognition.start();
 
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox2').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
+                recognition.onresult = function (e) {
+                    
+                    document.getElementById('TextBox2').value = e.results[0][0].transcript;
+                    document.getElementById('TextBox1').value = e.results[0][0].transcript;
+                    recognition.stop();
+                    document.getElementById('form2').submit();
+                };
 
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
+                recognition.onerror = function (e) {
+                    recognition.stop();
+                }
+            }
+             
+        }
     </script>
-
-    <script>
-  function startDictation3() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox3').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
-
-    <script>
-  function startDictation4() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox4').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
-
-    <script>
-  function startDictation5() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox5').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
-
-    <script>
-  function startDictation6() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox6').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
-
-    <script>
-  function startDictation7() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox7').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
-
-    <script>
-  function startDictation8() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox8').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
-
-    <script>
-  function startDictation9() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox9').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
-
-    <script>
-  function startDictation10() {
-
-    if (window.hasOwnProperty('webkitSpeechRecognition')) {
-
-      var recognition = new webkitSpeechRecognition();
-
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.lang = "tr-TR";
-      recognition.start();
-
-      recognition.onresult = function(e) {
-          document.getElementById('TextBox10').value
-                                 = e.results[0][0].transcript;
-        recognition.stop();
-        document.getElementById('form1').submit();
-      };
-
-      recognition.onerror = function(e) {
-        recognition.stop();
-      }
-
-    }
-  }
-    </script>
-    <script src='//vws.responsivevoice.com/v/e?key=hDhzC3TV'></script>
+    <script src='//vws.responsivevoice.com/v/e?key=Ve0mEYUy'></script>
 </body>
 </html>
