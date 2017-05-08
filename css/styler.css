@@ -1,0 +1,174 @@
+﻿
+    body
+{
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+html {
+    background: url(/images/background3.jpg) repeat center center fixed;
+    background-size: cover;
+}
+
+table {
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+tr {
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+td{
+    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+
+.auto-style2 {
+    width: 75%;
+    height: 656px;
+    visibility:visible;
+    overflow: hidden;
+    border-spacing:0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+}
+
+.auto-style12 {
+    height: 573px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right:0px;
+    width: 100%;
+    border-left-width:0px;
+    border-spacing:0px;
+    border-width:0px;
+    overflow:hidden;
+
+}
+
+
+.auto-style14 {
+    text-align: center;
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+
+
+.auto-style16 {
+    width: 60%;
+    text-align:left;
+}
+
+.auto-style17 {
+    width: 100%;
+}
+
+.study {
+    padding: 0px 0px;
+    font-size: 23px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #070840;
+    background-color: #CCFFFF;
+    border: none;
+    border-radius: 0px;
+    box-shadow: 0 9px #999;
+    width: 283px;
+    height: 57px;
+}
+
+    .study:hover {
+        background-color: #3a9a9a
+    }
+
+    .study:active {
+        background-color: #070840;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+.media {
+    padding: 0px 0px;
+    font-size: 23px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #3C7E40;
+    background-color: #CCFFCF;
+    border: none;
+    border-radius: 0px;
+    box-shadow: 0 9px #999;
+    width: 283px;
+    height: 57px;
+}
+
+    .media:hover {
+        background-color: #3a9a9a
+    }
+
+    .media:active {
+        background-color: #3C7E40;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+.game {
+    padding: 0px 0px;
+    font-size: 23px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #898b6b;
+    background-color: #fcffcc;
+    border: none;
+    border-radius: 0px;
+    box-shadow: 0 9px #999;
+    width: 283px;
+    height: 57px;
+}
+
+    .game:hover {
+        background-color: #3a9a9a
+    }
+
+    .game:active {
+        background-color: #898b6b;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+.stats {
+    padding: 0px 0px;
+    font-size: 23px;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    color: #5a3d11;
+    background-color: #FFEBCC;
+    border: none;
+    border-radius: 0px;
+    box-shadow: 0 9px #999;
+    width: 283px;
+    height: 57px;
+}
+
+    .stats:hover {
+        background-color: #3a9a9a
+    }
+
+    .stats:active {
+        background-color: #5a3d11;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
